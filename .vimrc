@@ -18,6 +18,7 @@ Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'godlygeek/tabular'
 Plugin 'let-def/ocp-indent-vim'
 Plugin 'let-def/vimbufsync'
+Plugin 'liuchengxu/vista.vim'
 Plugin 'ludovicchabant/vim-lawrencium'
 Plugin 'majutsushi/tagbar'
 Plugin 'prabirshrestha/async.vim'
@@ -66,6 +67,7 @@ set softtabstop=4
 set expandtab
 set incsearch
 set cino+=(0
+set textwidth=78
 
 " save & build
 autocmd FileType c command! -nargs=? W write | make
@@ -91,6 +93,7 @@ endif
 set ttimeoutlen=10
 
 call SourceIfExists("~/.vimrc.macos")
+call SourceIfExists("~/.vimrc.fb")
 
 " Include - (ASCII 45) and : (ASCII 58) as part of word for tag searches
 autocmd FileType php setlocal iskeyword=@,45,48-57,58,_,192-255,#
@@ -338,3 +341,11 @@ if count(s:opam_available_tools,"ocp-indent") == 0
   source "/home/vsiles/.vim/bundle/ocp-indent-vim/indent/ocaml.vim"
 endif
 " ## end of OPAM user-setup addition for vim / ocp-indent ## keep this line
+
+if executable('ocaml-language-server')
+  au User lsp_setup call lsp#register_server({
+        \ 'name': 'ocaml-language-server',
+        \ 'cmd': {server_info->[&shell, &shellcmdflag, 'opam config exec -- ocaml-language-server --stdio']},
+        \ 'whitelist': ['reason', 'ocaml'],
+        \ })
+endif
