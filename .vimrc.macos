@@ -1,0 +1,4 @@
+" macos stuff
+set backspace=indent,eol,start
+set textwidth=78
+
