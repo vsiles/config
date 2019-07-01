@@ -18,7 +18,6 @@ Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'godlygeek/tabular'
 Plugin 'let-def/ocp-indent-vim'
 Plugin 'let-def/vimbufsync'
-Plugin 'liuchengxu/vista.vim'
 Plugin 'ludovicchabant/vim-lawrencium'
 Plugin 'majutsushi/tagbar'
 Plugin 'prabirshrestha/async.vim'
@@ -70,7 +69,7 @@ set cino+=(0
 set textwidth=78
 
 " save & build
-autocmd FileType c command! -nargs=? W write | make
+autocmd FileType c,tex command! -nargs=? W write | make
 
 colorscheme wombat256mod
 
@@ -349,3 +348,6 @@ if executable('ocaml-language-server')
         \ 'whitelist': ['reason', 'ocaml'],
         \ })
 endif
+
+" ale
+let g:ale_linters = { 'python': [] }
