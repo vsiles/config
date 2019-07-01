@@ -196,7 +196,7 @@ if has('mouse')
 endif
 
 set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
+" set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 
 "" Vim 8: sending text to terminal
