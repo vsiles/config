@@ -144,6 +144,8 @@ imap \equiv ≡
 imap \to →
 imap \dot •
 imap \sigma σ
+imap \arr ⇒
+imap \Delta Δ
 
 autocmd FileType tex imapclear
 

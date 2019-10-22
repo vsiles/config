@@ -1,3 +1,4 @@
 " macos stuff
 set backspace=indent,eol,start
 
+let g:vista_default_executive = 'vim_lsp'
