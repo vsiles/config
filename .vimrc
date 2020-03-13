@@ -16,6 +16,7 @@ Plugin 'VundleVim/Vundle.vim'
 " plugin on GitHub repo
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'godlygeek/tabular'
+Plugin 'jceb/vim-orgmode'
 Plugin 'let-def/ocp-indent-vim'
 Plugin 'let-def/vimbufsync'
 Plugin 'ludovicchabant/vim-lawrencium'
@@ -29,6 +30,7 @@ Plugin 'roxma/nvim-yarp'
 Plugin 'roxma/vim-hug-neovim-rpc'
 Plugin 'rust-lang/rust.vim'
 Plugin 'Shougo/deoplete.nvim'
+Plugin 'tpope/vim-speeddating'
 Plugin 'tpope/vim-commentary'
 Plugin 'tpope/vim-fugitive'
 Plugin 'vim-airline/vim-airline'
@@ -299,7 +301,7 @@ command! OcamlFormat :w | %!ocamlformat %
 set number
 
 " Deoplete
-let g:deoplete#enable_at_startup = 1
+" let g:deoplete#enable_at_startup = 1
 
 let no_ocaml_maps = 1
 
