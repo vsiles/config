@@ -1,5 +1,5 @@
-if [ -f /opt/facebook/hg/share/scm-prompt.sh ]; then
-  source /opt/facebook/hg/share/scm-prompt.sh
+if [ -f /opt/facebook/hg/share/scm-prompt ]; then
+  source /opt/facebook/hg/share/scm-prompt
 fi
 
 # If not running interactively, don't do anything
@@ -106,6 +106,8 @@ alias mydevserver='mosh -6 devserver'
 # alias mydevserver='et $USER.sb.facebook.com:8080 -t="8377:8377"'
 alias mydevfwport='ssh -N -f sandbox-clipper'
 alias mybigserver='mosh -6 bigserver'
+alias myscratch='vim $HOME/Documents/scratch.org'
+alias fair_tunnel='et fairdev:8080 --jport 8080 -t 4321:4321,1250:22'
 
 export LC_ALL='en_US.UTF-8'
 
@@ -114,3 +116,20 @@ alias keynote_code='pbpaste | highlight -S py -O rtf | pbcopy'
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
 export qtpath=/usr/local/Cellar/qt@4/4.8.7_5
+
+alias love='/Applications/love.app/Contents/MacOS/love'
+
+# for leanproject
+export PATH="$PATH:/Users/vsiles/Library/Python/3.7/bin"
+
+# scala
+export PATH="$PATH:/Users/vsiles/Library/Application Support/Coursier/bin"
+
+function coq {
+    cd ~/Documents/work/ReaLM/Coq
+}
+
+function shack {
+    coq
+    cd shack
+}

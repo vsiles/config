@@ -38,6 +38,8 @@ Plugin 'vim-airline/vim-airline-themes'
 Plugin 'vim-scripts/a.vim'
 Plugin 'w0rp/ale'
 Plugin 'whonore/Coqtail'
+Plugin 'greymd/oscyank.vim'
+Plugin 'joom/latex-unicoder.vim'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -140,14 +142,41 @@ imap \vdash ⊢
 imap \forall ∀
 imap \bto ▹
 imap \Gamma Γ
+imap \gamma γ
 imap \lambda λ
 imap \Pi Π
 imap \equiv ≡
 imap \to →
 imap \dot •
 imap \sigma σ
+imap \Sigma Σ
 imap \arr ⇒
 imap \Delta Δ
+imap \xi ξ
+imap \lc ⌜
+imap \rc ⌝
+imap \muFlat ♭
+imap \ast ∗
+imap \sep ∗
+imap \mapsto ↦
+imap \exists ∃
+imap \vee ∨
+imap \wedge ∧
+imap \box  □
+imap \later ▷
+imap \dagger †
+
+
+" let g:unicoder_cancel_normal = 1
+" let g:unicoder_cancel_insert = 1
+" let g:unicoder_cancel_visual = 1
+" nnoremap <C-l> :call unicoder#start(0)<CR>
+" inoremap <C-l> <Esc>:call unicoder#start(1)<CR>
+" vnoremap <C-l> :<C-u>call unicoder#selection()<CR>
+let g:unicode_map = {
+  \ "\\box" : "□" ,
+  \ "\\sep" : "∗" ,
+  \ }
 
 autocmd FileType tex imapclear
 
@@ -173,7 +202,7 @@ autocmd FileType ocaml setlocal commentstring=(*\ %s\ *)
 autocmd FileType coq setlocal commentstring=(*\ %s\ *)
 
 " Coq files
-autocmd FileType coq setlocal formatoptions-=o
+" autocmd FileType coq setlocal formatoptions-=o
 
 " netRW
 let g:netrw_banner = 0
@@ -202,6 +231,8 @@ endif
 set statusline+=%#warningmsg#
 " set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
+
+if !has('nvim')
 
 "" Vim 8: sending text to terminal
 augroup my_terminal
@@ -257,6 +288,8 @@ nmap yrr <Plug>(send-to-term-line)
 nmap yr <Plug>(send-to-term)
 xmap R <Plug>(send-to-term)
 "" sending text to terminal
+endif " !has(nvim)
+
 
 "" RLS
 if executable('rls')
@@ -355,3 +388,8 @@ endif
 
 " ale
 let g:ale_linters = { 'python': [] }
+" ## added by OPAM user-setup for vim / base ## 93ee63e278bdfc07d1139a748ed3fff2 ## you can edit, but keep this line
+let s:opam_share_dir = system("opam config var share")
+let s:opam_share_dir = substitute(s:opam_share_dir, '[\r\n]*$', '', '')
+
+command HOL source $HOME/.vim/hol.vim
