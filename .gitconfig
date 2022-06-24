@@ -1,13 +1,17 @@
+[core]
+    editor = vim
 [user]
   name = Vincent Siles
   email = vsiles@fb.com
 
 [color]
 	ui = auto
+
 [merge]
 	tool = vimdiff
 	conflictstyle = diff3
         prompt = false
+
 [pull]
         rebase = true
 
