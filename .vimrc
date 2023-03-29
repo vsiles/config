@@ -25,7 +25,6 @@ Plugin 'prabirshrestha/async.vim'
 Plugin 'prabirshrestha/asyncomplete-lsp.vim'
 Plugin 'prabirshrestha/asyncomplete.vim'
 Plugin 'prabirshrestha/vim-lsp'
-Plugin 'racer-rust/vim-racer'
 Plugin 'roxma/nvim-yarp'
 Plugin 'roxma/vim-hug-neovim-rpc'
 Plugin 'rust-lang/rust.vim'
@@ -39,6 +38,7 @@ Plugin 'vim-scripts/a.vim'
 Plugin 'w0rp/ale'
 Plugin 'whonore/Coqtail'
 Plugin 'greymd/oscyank.vim'
+Plugin 'will133/vim-dirdiff'
 Plugin 'joom/latex-unicoder.vim'
 
 " All of your Plugins must be added before the following line
@@ -165,6 +165,9 @@ imap \wedge ∧
 imap \box  □
 imap \later ▷
 imap \dagger †
+imap \bigD 𝔇
+imap \Theta Θ
+imap \Omega Ω
 
 
 " let g:unicoder_cancel_normal = 1
@@ -292,21 +295,16 @@ endif " !has(nvim)
 
 
 "" RLS
-if executable('rls')
+if executable('rustup')
     au User lsp_setup call lsp#register_server({
-                \ 'name': 'rls',
-                \ 'cmd': {server_info->['rustup', 'run', 'nightly', 'rls']},
-                \ 'whitelist': ['rust'],
+                \ 'name': 'rust-analyzer',
+                \ 'cmd': {server_info->['rustup', 'run', 'nightly', 'rust-analyzer']},
+                \ 'allowlist': ['rust'],
                 \ })
+    autocmd FileType rust nnoremap <buffer> <leader>t :LspHover<cr>
+    au FileType rust nmap gd :ALEGoToDefinition<cr>
 endif
 "" see https://github.com/prabirshrestha/vim-lsp for the command
-
-"" Rust
-let g:racer_experimental_complete = 1
-au FileType rust nmap gd <Plug>(rust-def)
-au FileType rust nmap gs <Plug>(rust-def-split)
-au FileType rust nmap gx <Plug>(rust-def-vertical)
-au FileType rust nmap <leader>gd <Plug>(rust-doc)
 
 " Old syntastic stuff
 " let g:syntastic_always_populate_loc_list = 1
@@ -333,8 +331,15 @@ command! OcamlFormat :w | %!ocamlformat %
 
 set number
 
+if !has('nvim')
 " Deoplete
 " let g:deoplete#enable_at_startup = 1
+
+" LSP
+" let g:lsp_diagnostics_enabled = 0         " disable diagnostics support
+" DEBUG lsp
+" let g:lsp_log_verbose = 1
+" let g:lsp_log_file = expand('~/lsp.log')
 
 let no_ocaml_maps = 1
 
@@ -361,8 +366,11 @@ endfunction
 let s:opam_configuration['merlin'] = function('OpamConfMerlin')
 
 let s:opam_packages = ["ocp-indent", "ocp-index", "merlin"]
-let s:opam_check_cmdline = ["opam list --installed --short --safe --color=never"] + s:opam_packages
-let s:opam_available_tools = split(system(join(s:opam_check_cmdline)))
+" opam is painfully slow, to speed things up, I replaced the following lines
+" with their expected result
+" let s:opam_check_cmdline = ["opam list --installed --short --safe --color=never"] + s:opam_packages
+" let s:opam_available_tools = split(system(join(s:opam_check_cmdline)))
+let s:opam_available_tools = ["ocp-indent", "merlin"]
 for tool in s:opam_packages
   " Respect package order (merlin should be after ocp-index)
   if count(s:opam_available_tools, tool) > 0
@@ -386,10 +394,19 @@ if executable('ocaml-language-server')
         \ })
 endif
 
+" Target is displayed in a new tab
+let g:merlin_split_method = "tab"
+let g:merlin_locate_preference = "ml"
+
 " ale
-let g:ale_linters = { 'python': [] }
+let g:ale_linters = { 'python': [] , 'rust': ['analyzer'] }
 " ## added by OPAM user-setup for vim / base ## 93ee63e278bdfc07d1139a748ed3fff2 ## you can edit, but keep this line
 let s:opam_share_dir = system("opam config var share")
 let s:opam_share_dir = substitute(s:opam_share_dir, '[\r\n]*$', '', '')
+endif " !has(nvim)
+
+if has('nvim')
+    let g:python3_host_prog = '/usr/bin/python3'
+endif
 
 command HOL source $HOME/.vim/hol.vim
