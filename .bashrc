@@ -1,6 +1,24 @@
+# .bashrc
+# Unlike earlier versions, Bash4 sources your bashrc on non-interactive shells.
+# The line below prevents anything in this file from creating output that will
+# break utilities that use ssh as a pipe, including git and mercurial.
+[ -z "$PS1" ] && return
+
+# Source global definitions
+if [ -f /etc/bashrc ]; then
+  . /etc/bashrc
+fi
+
+# Source Facebook definitions
 if [ -f /opt/facebook/hg/share/scm-prompt ]; then
   source /opt/facebook/hg/share/scm-prompt
 fi
+
+if [ -f $LOCAL_ADMIN_SCRIPTS/scm-prompt ]; then
+	. $LOCAL_ADMIN_SCRIPTS/scm-prompt
+fi
+
+stty -ixon
 
 # If not running interactively, don't do anything
 case $- in
@@ -9,8 +27,8 @@ case $- in
 esac
 
 # User specific aliases and functions for all shells
-export EDITOR=/usr/local/bin/vim
-export VISUAL=/usr/local/bin/vim
+export EDITOR=vim
+export VISUAL=vim
 alias rm='rm -i'
 
 # don't put duplicate lines or lines starting with space in the history.
@@ -32,6 +50,8 @@ shopt -s checkwinsize
 # match all files and zero or more directories and subdirectories.
 #shopt -s globstar
 
+#export PROMPT_COMMAND+="; history -a; history -n"
+#export PROMPT_COMMAND+="; history -n"
 
 function parse_hg_branch {
   if [[ -n $(_scm_prompt) ]]; then
@@ -68,6 +88,11 @@ alias ls='ls -G'
 alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
+
+function gg()
+{
+  grep -RI --exclude-dir=target "$@"
+}
 
 # some more ls aliases
 alias ll='ls -alF'

@@ -1,5 +1,6 @@
 [core]
     editor = vim
+
 [user]
   name = Vincent Siles
   email = vsiles@fb.com

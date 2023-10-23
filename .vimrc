@@ -20,7 +20,6 @@ Plugin 'jceb/vim-orgmode'
 Plugin 'let-def/ocp-indent-vim'
 Plugin 'let-def/vimbufsync'
 Plugin 'ludovicchabant/vim-lawrencium'
-Plugin 'majutsushi/tagbar'
 Plugin 'prabirshrestha/async.vim'
 Plugin 'prabirshrestha/asyncomplete-lsp.vim'
 Plugin 'prabirshrestha/asyncomplete.vim'
@@ -32,14 +31,18 @@ Plugin 'Shougo/deoplete.nvim'
 Plugin 'tpope/vim-speeddating'
 Plugin 'tpope/vim-commentary'
 Plugin 'tpope/vim-fugitive'
+Plugin 'tpope/vim-dispatch'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'vim-scripts/a.vim'
-Plugin 'w0rp/ale'
+Plugin 'dense-analysis/ale'
 Plugin 'whonore/Coqtail'
 Plugin 'greymd/oscyank.vim'
 Plugin 'will133/vim-dirdiff'
 Plugin 'joom/latex-unicoder.vim'
+Plugin 'junegunn/fzf'
+Plugin 'junegunn/fzf.vim'
+Plugin 'atelierbram/vim-colors_atelier-schemes'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -56,6 +59,8 @@ filetype plugin indent on    " required
 " see :h vundle for more details or wiki for FAQ
 " Put your non-Plugin stuff after this line 
 
+" FZF
+set rtp+=~/.fzf/bin
 " Function to source only if file exists
 function! SourceIfExists(file)
     if filereadable(expand(a:file))
@@ -75,7 +80,14 @@ set textwidth=78
 " save & build
 autocmd FileType c,tex command! -nargs=? W write | make
 
-colorscheme wombat256mod
+set background=dark
+" colorscheme wombat256mod
+" colorscheme Atelier_EstuaryDark
+" colorscheme Atelier_SavannaDark
+colorscheme Atelier_DuneDark
+" colorscheme Atelier_SulphurpoolDark
+
+
 
 set cursorline
 set cursorcolumn
@@ -86,7 +98,9 @@ set splitright
 
 " air-line
 set laststatus=2
-let g:airline_theme='badwolf'
+" let g:airline_theme='badwolf'
+let g:airline_theme='Atelier_DuneDark'
+
 
 let g:airline_powerline_fonts = 1
 
@@ -304,7 +318,24 @@ if executable('rustup')
     autocmd FileType rust nnoremap <buffer> <leader>t :LspHover<cr>
     au FileType rust nmap gd :ALEGoToDefinition<cr>
 endif
-"" see https://github.com/prabirshrestha/vim-lsp for the command
+" "" RLS old rust stuff for devservers.
+" "" Will need to update it. The above works with the "home" rustup
+" "" see https://github.com/prabirshrestha/vim-lsp for the command
+" if executable('rls')
+"     au User lsp_setup call lsp#register_server({
+"                 \ 'name': 'rls',
+"                 \ 'cmd': {server_info->['/data/users/vsiles/fbsource/fbcode/common/rust/tools/scripts/rls_wrapper.sh']},
+"                 \ 'whitelist': ['rust'],
+"                 \ })
+" endif
+
+" if executable('rust-analyzer')
+"     au User lsp_setup call lsp#register_server({
+"                 \ 'name': 'rust-analyzer',
+"                 \ 'cmd': {server_info->['rust-analyzer']},
+"                 \ 'whitelist': ['rust'],
+"                 \ })
+" endif
 
 " Old syntastic stuff
 " let g:syntastic_always_populate_loc_list = 1
@@ -330,6 +361,7 @@ endfunction
 command! OcamlFormat :w | %!ocamlformat %
 
 set number
+set relativenumber
 
 if !has('nvim')
 " Deoplete
@@ -386,23 +418,19 @@ if count(s:opam_available_tools,"ocp-indent") == 0
 endif
 " ## end of OPAM user-setup addition for vim / ocp-indent ## keep this line
 
-if executable('ocaml-language-server')
-  au User lsp_setup call lsp#register_server({
-        \ 'name': 'ocaml-language-server',
-        \ 'cmd': {server_info->[&shell, &shellcmdflag, 'opam config exec -- ocaml-language-server --stdio']},
-        \ 'whitelist': ['reason', 'ocaml'],
-        \ })
-endif
 
 " Target is displayed in a new tab
 let g:merlin_split_method = "tab"
 let g:merlin_locate_preference = "ml"
 
+" function! MerlinSelectBinary()
+"   return "/usr/bin/ocamlmerlin"
+" endfunction
+
 " ale
 let g:ale_linters = { 'python': [] , 'rust': ['analyzer'] }
-" ## added by OPAM user-setup for vim / base ## 93ee63e278bdfc07d1139a748ed3fff2 ## you can edit, but keep this line
-let s:opam_share_dir = system("opam config var share")
-let s:opam_share_dir = substitute(s:opam_share_dir, '[\r\n]*$', '', '')
+let g:ale_rust_analyzer_executable = '/data/users/vsiles/my-rust/rustup/toolchains/nightly-x86_64-unknown-linux-gnu/bin/rust-analyzer'
+
 endif " !has(nvim)
 
 if has('nvim')
