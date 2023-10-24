@@ -1,3 +1,7 @@
+-- nvim-tree
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
   vim.fn.system({
@@ -12,8 +16,21 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
-    { "atelierbram/vim-colors_atelier-schemes", lazy = "true" },
+    "airblade/vim-rooter",
+    -- { "atelierbram/vim-colors_atelier-schemes", lazy = "true" },
+    -- { "catppuccin/nvim", name = "catppuccin", priority = 1000 },
+    "dense-analysis/ale",
+    { "junegunn/fzf", dir = "~/.fzf", build = "./install --all" },
+    "junegunn/fzf.vim",
+    "ludovicchabant/vim-lawrencium",
+    { "nvim-tree/nvim-tree.lua",
+      dependencies = { 'nvim-tree/nvim-web-devicons' }
+    },
     "tpope/vim-commentary",
+    "tpope/vim-fugitive",
+    "vim-airline/vim-airline",
+    "vim-airline/vim-airline-themes",
+    "chriskempson/base16-vim",
 })
 
 -----------------------------------------------------------------------------
@@ -26,12 +43,29 @@ vim.g.python3_host_prog='/usr/bin/python3'
 -- Theme configuration
 -----------------------------------------------------------------------------
 
+-- vim.cmd [[colorscheme wombat256mod]]
+-- vim.cmd.colorscheme "Atelier_SavannaDark"
+-- vim.cmd.colorscheme "Atelier_SulphurpoolDark"
+--
 vim.opt.background = 'dark'
--- colorscheme wombat256mod
--- vim.cmd [[colorscheme Atelier_EstuaryDark]]
--- vim.cmd [[colorscheme Atelier_DuneDark]]
-vim.cmd [[colorscheme Atelier_SulphurpoolDark]]
+vim.opt.termguicolors = true
+vim.cmd.colorscheme "base16-default-dark"
 
+
+-- Airline
+vim.opt.showmode = false
+vim.opt.laststatus = 2
+-- vim.g.airline_theme = 'badwolf'
+vim.g.airline_theme = 'base16_gruvbox_dark_hard'
+-- vim.g.airline_theme = 'base16_gruvbox_dark_soft'
+-- vim.g.airline_theme = 'Atelier_SulphurpoolDark'
+
+vim.g.airline_powerline_fonts = 1
+
+if not vim.g.airline_symbols then
+    vim.g.airline_symbols = {}
+end
+vim.opt.ttimeoutlen = 10
 -----------------------------------------------------------------------------
 -- Helper functions
 -----------------------------------------------------------------------------
@@ -60,6 +94,10 @@ end
 -----------------------------------------------------------------------------
 -- nvim tuning
 -----------------------------------------------------------------------------
+-- Not sure I need this, but keeping it around just in case
+-- vim.opt.guicursor = 'n-v-c:block-Cursor/lCursor-blinkon0,i-ci:ver25-Cursor/lCursor,r-cr:hor20-Cursor/lCursor'
+
+
 vim.opt.inccommand = 'nosplit' -- 'split' opens a live window for off-screen occurrences
 vim.opt.shiftwidth = 4
 vim.opt.softtabstop = 4
@@ -92,6 +130,12 @@ vim.opt.relativenumber = true
 -----------------------------------------------------------------------------
 -- Plugin tuning
 -----------------------------------------------------------------------------
+-- nvim.tree
+-- TODO: update `update_focused_file` and `diagnostics` ?
+require("nvim-tree").setup()
+
+-- fzf
+-- vim.g.fzf_layout = { down = '~20%' }
 
 -- vim-commentary
 augroup('vim-commentary', { clear = true })
@@ -133,3 +177,10 @@ end
 vim.g.merlin_split_method = "tab"
 -- let g:merlin_locate_preference = "ml"
 vim.g.merlin_locate_preference = "ml"
+
+
+-- ale
+vim.g.ale_use_neovim_diagnostics_api = 1
+-- vim.g.ale_linters = { 'python': [] , 'rust': ['analyzer'] }
+vim.g.ale_linters = { python = {} }
+-- let g:ale_rust_analyzer_executable = '/data/users/vsiles/my-rust/rustup/toolchains/nightly-x86_64-unknown-linux-gnu/bin/rust-analyzer'
