@@ -73,6 +73,7 @@ vim.cmd [[autocmd ColorScheme * highlight FloatBorder guifg=white guibg=#1f2335]
 vim.opt.background = 'dark'
 vim.opt.termguicolors = true
 vim.cmd.colorscheme "base16-default-dark"
+-- vim.cmd [[highlight Comment cterm=italic gui=italic]]
 
 -- Make comments more prominent -- they are important.
 local bools = vim.api.nvim_get_hl(0, { name = 'Boolean' })
@@ -169,6 +170,12 @@ vim.opt.cmdheight = 2
 -- You will have bad experience for diagnostic messages when it's default 4000.
 vim.opt.updatetime = 300
 
+-- Permanent undo
+local undodir = vim.fn.stdpath('data') .. '/undodir'
+vim.fn.mkdir(undodir, 'p')
+vim.opt.undodir = undodir
+vim.opt.undofile = true
+
 -----------------------------------------------------------------------------
 -- lsp
 -----------------------------------------------------------------------------
@@ -191,12 +198,14 @@ cmp.setup({
     ['<C-e>'] = cmp.mapping.abort(),
     -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
     ['<CR>'] = cmp.mapping.confirm({ select = true }),
+    ['<Tab>'] = cmp.mapping.confirm({ select = true }),
   }),
   sources = cmp.config.sources({
       -- TODO: currently snippets from lsp end up getting prioritized -- stop that!
       { name = 'nvim_lsp' },
     }, {
       { name = 'path' },
+      { name = 'buffer' },
     }),
     experimental = {
       ghost_text = true,
