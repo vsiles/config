@@ -13,8 +13,8 @@ local wezterm = require "wezterm";
 --
 
 -- use your devserver hostname here!
-local SB = "devvm11145.lla0.facebook.com"
-local SB_Big = "devvm3592.lla0.facebook.com"
+local SB = "XXX.YYY.com"
+local SB_Big = "AAA.BBB.com"
 
 local config = {}
 
