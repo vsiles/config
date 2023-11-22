@@ -1,4 +1,6 @@
 set -gx PATH $PATH /opt/local/bin /opt/local/sbin
+set -gx PATH $PATH:/Applications/WezTerm.app/Contents/MacOS/
+set -gx PATH $PATH:$HOME/Downloads/nvim-macos/bin/
 
 function rm --description "safe rm"
     command rm -i $argv

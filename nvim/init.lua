@@ -1,3 +1,8 @@
+-- sources for lua dev
+-- https://luals.github.io/#install
+-- https://github.com/LuaLS/lua-language-server
+-- https://www.chiarulli.me/Neovim/28-neovim-lua-development/
+
 -- nvim-tree
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
@@ -23,20 +28,76 @@ require("lazy").setup({
     "vim-airline/vim-airline-themes",
     "chriskempson/base16-vim",
 
+    -- note taking
+    {
+        "nvim-treesitter/nvim-treesitter",
+        build = ":TSUpdate",
+        lazy = true,
+        opts = {
+            highlight = { enable = true },
+        },
+        config = function(_, opts)
+            require("nvim-treesitter.configs").setup(opts)
+        end,
+    },
+    {
+        "nvim-neorg/neorg",
+        ft = "norg",
+        cmd = "Neorg",
+        build = ":Neorg sync-parsers",
+        dependencies = { "nvim-lua/plenary.nvim" },
+        config = function()
+            require("neorg").setup {
+                load = {
+                    ["core.defaults"] = {},
+                    ["core.concealer"] = {},
+                    ["core.dirman"] = {
+                        config = {
+                            workspaces = {
+                                work = "~/notes/work",
+                                home = "~/notes/home",
+                            },
+                            default_workspace = "home",
+                        },
+                    },
+                    -- required :TSInstall norg_meta
+                    ["core.summary"] = {},
+                    ["core.completion"] = {
+                        config = {
+                            engine = "nvim-cmp",
+                        },
+                    },
+                },
+            }
+
+            vim.wo.foldlevel = 99
+            vim.wo.conceallevel = 2
+        end,
+    },
+
     -- language services
     { "dense-analysis/ale", lazy = true },
     "neovim/nvim-lspconfig",
-    "rust-lang/rust.vim",
-    { "hrsh7th/cmp-nvim-lsp", branch = "main"},
-    { "hrsh7th/cmp-buffer", branch = "main"},
-    { "hrsh7th/cmp-path", branch = "main"},
-    { "hrsh7th/nvim-cmp", branch = "main"},
-    "ray-x/lsp_signature.nvim",
-    "simrat39/rust-tools.nvim",
-
-    -- required by nvim-cmp
-    { "hrsh7th/cmp-vsnip", branch = "main" },
-    "hrsh7th/vim-vsnip",
+    {"rust-lang/rust.vim", ft = "rust" },
+    {
+        "hrsh7th/nvim-cmp",
+        branch = "main",
+        event = "InsertEnter", 
+        dependencies = {
+            { "hrsh7th/cmp-nvim-lsp", branch = "main"},
+            { "hrsh7th/cmp-buffer", branch = "main"},
+            { "hrsh7th/cmp-path", branch = "main"},
+            { "hrsh7th/cmp-vsnip", branch = "main" },
+            "hrsh7th/vim-vsnip",
+        },
+    },
+    {
+        "ray-x/lsp_signature.nvim",
+        event = "VeryLazy",
+        opts = {},
+        config = function(_, opts) require("lsp_signature").setup(opts) end
+    },
+    {"simrat39/rust-tools.nvim", ft = "rust"},
 
     -- misc. tooling
     { "junegunn/fzf", dir = "~/.fzf", build = "./install --all" },
@@ -44,11 +105,15 @@ require("lazy").setup({
     { "nvim-tree/nvim-tree.lua",
       dependencies = { 'nvim-tree/nvim-web-devicons' },
     },
+    { "stevearc/oil.nvim",
+      opts = {},
+      dependencies = { "nvim-tree/nvim-web-devicons" },
+    },
     "tpope/vim-commentary",
-    "mhinz/vim-crates",
+    {"mhinz/vim-crates", ft = "toml"},
 
     -- SCM
-    "ludovicchabant/vim-lawrencium",
+    {"ludovicchabant/vim-lawrencium"},
     "tpope/vim-fugitive",
     "airblade/vim-rooter",
 })
@@ -127,9 +192,13 @@ end
 -----------------------------------------------------------------------------
 -- nvim tuning
 -----------------------------------------------------------------------------
+-- In windows, we want unix file support anyway
+vim.opt.fileformats = {'unix', 'dos'}
+
 -- Not sure I need this, but keeping it around just in case
 -- vim.opt.guicursor = 'n-v-c:block-Cursor/lCursor-blinkon0,i-ci:ver25-Cursor/lCursor,r-cr:hor20-Cursor/lCursor'
 
+vim.g.maplocalleader = " "
 
 vim.opt.inccommand = 'nosplit' -- 'split' opens a live window for off-screen occurrences
 vim.opt.shiftwidth = 4
@@ -176,10 +245,19 @@ vim.fn.mkdir(undodir, 'p')
 vim.opt.undodir = undodir
 vim.opt.undofile = true
 
+-- centering jump and search commands
+vim.api.nvim_set_keymap('n', 'n', 'nzz', { silent = true, noremap = true })
+vim.api.nvim_set_keymap('n', 'N', 'Nzz', { silent = true, noremap = true })
+vim.api.nvim_set_keymap('n', '*', '*zz', { silent = true, noremap = true })
+vim.api.nvim_set_keymap('n', '#', '#zz', { silent = true, noremap = true })
+vim.api.nvim_set_keymap('n', 'g*', 'g*zz', { silent = true, noremap = true })
+-- TODO: learn how to do this for gd in the lsp config too
+
 -----------------------------------------------------------------------------
 -- lsp
 -----------------------------------------------------------------------------
 -- local lspconfig = require('lspconfig')
+-- TODO: make that more lazy :D
 local rt = require("rust-tools")
 
 local cmp = require('cmp')
