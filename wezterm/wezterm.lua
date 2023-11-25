@@ -1,4 +1,5 @@
 local wezterm = require "wezterm";
+local act = wezterm.action
 
 -- TODO
 -- capture current screen and open it in vim/nvim
@@ -26,7 +27,11 @@ end
 
 
 -- font configuration
-config.font = wezterm.font "UbuntuMono Nerd Font Mono"
+if wezterm.target_triple == 'x86_64-pc-windows-msvc' then
+    config.font = wezterm.font "RobotoMono Nerd Font"
+else
+    config.font = wezterm.font "UbuntuMono Nerd Font Mono"
+end
 config.font_size = 18.0
 -- config.font_antialias = "Subpixel", -- None, Greyscale, Subpixel
 -- config.font_hinting = "Full",  -- None, Vertical, VerticalSubpixel, Full
