@@ -111,6 +111,7 @@ require("lazy").setup({
     },
     "tpope/vim-commentary",
     {"mhinz/vim-crates", ft = "toml"},
+    { "voldikss/vim-floaterm", lazy = false },
 
     -- SCM
     {"ludovicchabant/vim-lawrencium"},
@@ -252,6 +253,16 @@ vim.api.nvim_set_keymap('n', '*', '*zz', { silent = true, noremap = true })
 vim.api.nvim_set_keymap('n', '#', '#zz', { silent = true, noremap = true })
 vim.api.nvim_set_keymap('n', 'g*', 'g*zz', { silent = true, noremap = true })
 -- TODO: learn how to do this for gd in the lsp config too
+
+-----------------------------------------------------------------------------
+-- Float Term bindings
+-----------------------------------------------------------------------------
+vim.api.nvim_set_keymap('n', '<leader>cn', ':FloatermNew<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader>ct', '<Esc>:FloatermToggle<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader>ck', '<Esc>:FloatermKill<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('t', '<leader>ct', '<C-\\><C-n>:FloatermToggle<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('t', '<leader>ck', '<C-\\><C-n>:FloatermKill<CR>', { noremap = true, silent = true })
+
 
 -----------------------------------------------------------------------------
 -- lsp
