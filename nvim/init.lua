@@ -381,7 +381,15 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
   }
 )
 
-
+--[[
+-- test opencl lsp
+local opencl = require('lspconfig').opencl_ls
+opencl.setup({
+    cmd = { "/Users/vsiles/Downloads/opencl-language-server" },
+    filetypes = { "opencl" },
+}
+)
+--]]
 -----------------------------------------------------------------------------
 -- Plugin tuning
 -----------------------------------------------------------------------------
