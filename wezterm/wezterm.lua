@@ -23,6 +23,9 @@ local config = {}
 -- TODO: double check the triple value
 if wezterm.target_triple == 'x86_64-pc-windows-msvc' then
     config.default_prog = { 'powershell.exe' }
+else
+    -- on mac, trying to fix glitches on resize/new tab opening
+    config.freetype_load_flags = 'NO_HINTING'
 end
 
 
