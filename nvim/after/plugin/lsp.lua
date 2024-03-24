@@ -47,18 +47,20 @@ end
 -- -- TODO: make that more lazy :D
 -- local rt = require("rust-tools")
 
-local capabilities = require('cmp_nvim_lsp').default_capabilities()
+-- local capabilities = require('cmp_nvim_lsp').default_capabilities()
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
---[[
-local capabilities = vim.tbl_deep_extend(
-      'force',
-      vim.lsp.protocol.make_client_capabilities(),
-      require('cmp_nvim_lsp').default_capabilities(),
-      -- File watching is disabled by default for neovim.
-      -- See: https://github.com/neovim/neovim/pull/22405
-      { workspace = { didChangeWatchedFiles = { dynamicRegistration = true } } }
-    );
---]]
+require('lsp_signature').setup()
+
+-- local capabilities = vim.tbl_deep_extend(
+--       'force',
+--       vim.lsp.protocol.make_client_capabilities(),
+--       require('cmp_nvim_lsp').default_capabilities(),
+--       -- File watching is disabled by default for neovim.
+--       -- See: https://github.com/neovim/neovim/pull/22405
+--       { workspace = { didChangeWatchedFiles = { dynamicRegistration = true } } }
+--     );
 
 vim.g.rustaceanvim = {
     server = {
