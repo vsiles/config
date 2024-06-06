@@ -11,6 +11,8 @@ local on_attach = function(client, bufnr)
 
   --Enable completion triggered by <c-x><c-o>
   buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
+  -- vim.bo[bufnr].omnifunc = 'v:lua.vim.lsp.omnifunc'
+
 
   -- Mappings.
   local opts = { noremap=true, silent=true }
@@ -146,12 +148,14 @@ lspconfig.pylsp.setup {
         },
         black = {
           enabled = true,
+          lineLength = 120,
         },
         isort = {
           enabled = true,
         },
         flake8 = {
           enabled = true,
+          maxLineLength = 120,
         }
       },
       configurationSources = {
@@ -188,3 +192,23 @@ lspconfig.lua_ls.setup({
     }
   }
 })
+
+-- vim.lsp.start({
+--     cmd = { '/Users/vincent.siles/Documents/2024-03-nix-training/my-nix-lsp/target/debug/my-nix-lsp' },
+--   root_dir = vim.fn.getcwd(), -- Use PWD as project root dir.
+-- })
+
+-- Terraform lsp
+lspconfig.terraformls.setup{}
+
+vim.api.nvim_create_autocmd({"BufWritePre"}, {
+  pattern = {"*.tf", "*.tfvars"},
+  callback = function()
+    vim.lsp.buf.format()
+  end,
+})
+
+-- typescript lsp
+lspconfig.tsserver.setup({
+  on_attach = on_attach,
+  })

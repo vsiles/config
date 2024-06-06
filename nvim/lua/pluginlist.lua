@@ -36,11 +36,12 @@ return {
         opts = {
             highlight = {
                 enable = true,
-                disable = { "c", "rust" },
+                disable = { "c", "rust", "python" },
             },
             ensure_installed = { "c", "lua", "vim", "vimdoc", "nix", "rust", "python" },
         },
         config = function(_, opts)
+            require('nvim-treesitter.install').compilers = { 'gcc' }
             require("nvim-treesitter.configs").setup(opts)
         end,
     },
@@ -93,7 +94,7 @@ return {
             { "hrsh7th/cmp-buffer", branch = "main"},
             { "hrsh7th/cmp-path", branch = "main"},
             { "hrsh7th/cmp-vsnip", branch = "main" },
-            "hrsh7th/vim-vsnip",
+            { "hrsh7th/cmp-cmdline", branch = "main" },
         },
     },
     {

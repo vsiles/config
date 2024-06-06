@@ -2,10 +2,9 @@
 
 local cmp = require('cmp')
 
-cmp.register_source('nix-cmp', require('nix-cmp'))
+-- cmp.register_source('nix-cmp', require('nix-cmp'))
 
 --[[
-local cmp = require('cmp')
 local luasnip = require('luasnip')
 
 require('luasnip.loaders.from_vscode').lazy_load()
@@ -64,6 +63,8 @@ cmp.setup({
   }),
   sources = cmp.config.sources({
       { name = 'nvim_lsp' },
+      { name = 'buffer' },
+      { name = 'path' },
     }, {
       { name = 'path' },
       { name = 'buffer' },
@@ -94,5 +95,7 @@ cmp.setup.filetype('nix', {
 cmp.setup.cmdline(':', {
   sources = cmp.config.sources({
     { name = 'path' }
+   }, {
+    { name = 'cmdline' }
   })
 })
