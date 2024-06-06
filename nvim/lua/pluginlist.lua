@@ -90,11 +90,12 @@ return {
         branch = "main",
         event = "InsertEnter",
         dependencies = {
-            { "hrsh7th/cmp-nvim-lsp", branch = "main"},
-            { "hrsh7th/cmp-buffer", branch = "main"},
-            { "hrsh7th/cmp-path", branch = "main"},
-            { "hrsh7th/cmp-vsnip", branch = "main" },
-            { "hrsh7th/cmp-cmdline", branch = "main" },
+            "hrsh7th/cmp-nvim-lsp",
+            "hrsh7th/cmp-buffer",
+            "hrsh7th/cmp-path",
+            "hrsh7th/cmp-vsnip",
+            "hrsh7th/cmp-cmdline",
+            "hrsh7th/vim-vsnip",
         },
     },
     {
@@ -103,7 +104,6 @@ return {
         opts = {},
         config = function(_, opts) require("lsp_signature").setup(opts) end
     },
-    -- {"simrat39/rust-tools.nvim", ft = "rust"},
     {
         'mrcjkb/rustaceanvim',
         version = '^4', -- Recommended
